@@ -10,43 +10,41 @@ int validateNumbers_a(int w) {
 }
 
 int validateNumbers_b(int w, int h) {
-    if (validateNumbers_a(w) == 0) {
-        if (h > 2 && h < 70) {
-            return 0;
+    if ((w > 2) && (w < 70) && (h > 2) && (h < 70)) {
+            if (w % 2 == 1) {
+                return 0;
         } else {
             fprintf(stderr, "Error: Sirka neni liche cislo!\n");
             return 102;
         }
     } else {
+        fprintf(stderr, "Error: Vstup mimo interval!\n");
         return 101;
     }
 }
 
+
 int validateNumbers_c(int w, int h, int f) {
-    if (validateNumbers_b(w, h) == 0) {
-        if (f >= 0 && f < h) {
-            return 0;
-        } else {
-            fprintf(stderr, "Error: Neplatna velikost plotu!\n");
-            return 103;
-        }
+    if ((w > 2) && (w < 70) && (h > 2) && (h < 70) && (f > 2) && (f < 70)) {
+       if (w % 2 == 1) {
+           if (f < h) {
+               return 0;
+           } else {
+               fprintf(stderr, "Error: Neplatna velikost plotu!\n");
+               return 103;
+           }
+       } else {
+           fprintf(stderr, "Error: Sirka neni liche cislo!\n");
+           return 102;
+       }
 
-    } else return 102;
+    } else {
+        fprintf(stderr, "Error: Vstup mimo interval!\n");
+        return 101;
+    }
 }
 
-int drawSquare(int w) {
-    if (validateNumbers_a(w) == 0) {
-        for (int i = 0; i < w; i++) {
-            for (int j = 0; j < w; j++) {
-                if ((i == 0 || i == (w - 1)) || (j == 0 || j == (w - 1))) {
-                    printf("X");
-                } else printf(" ");
-            }
-            printf("\n");
-        }
-        return 0;
-    } else return validateNumbers_a(w);
-}
+
 
 void drawSquareWithInfill(int w, int h) {
     for (int i = 0; i < h; i++) {
@@ -122,25 +120,42 @@ void drawRoof(int w, int h) {
     }
 }
 
+int drawSquare(int w) {
+    int rVal = validateNumbers_a(w);
+    if (rVal == 0) {
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < w; j++) {
+                if ((i == 0 || i == (w - 1)) || (j == 0 || j == (w - 1))) {
+                    printf("X");
+                } else printf(" ");
+            }
+            printf("\n");
+        }
+        return 0;
+    } else return rVal;
+}
+
 int drawHouse(int w, int h) {
-    if (validateNumbers_b(w, h) == 0) {
+    int rVal = validateNumbers_b(w, h);
+    if (rVal == 0) {
         drawRoof(w, h);
         drawSquareWithInfill(w, h);
         return 0;
-    } else return validateNumbers_b(w, h);
+    } else return rVal;
 }
 
 int drawHouseWithFence(int w, int h, int f) {
-    if (validateNumbers_c(w, h, f) == 0) {
+    int rVal = validateNumbers_c(w, h, f);
+    if (rVal == 0) {
         drawRoof(w, h);
         drawSquareWithFence(w, h, f);
         return 0;
-    } else return validateNumbers_c(w, h, f);
+    } else return rVal;
 }
 
 
 int main() {
-    int w, h, f;
+     int w, h, f;
 
     int reads = scanf("%d %d %d", &w, &h, &f);
 
@@ -154,6 +169,4 @@ int main() {
         fprintf(stderr, "Error: Chybny vstup!\n");
         return 100;
     }
-
-
 }
